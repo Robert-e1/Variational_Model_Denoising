@@ -7,22 +7,26 @@ import cv2 as cv
 import os
 from os import listdir
 # CONSTANTS
-isnr = 30
+isnr = 10
 
 folder_dir = "F:\\VMTDK_2022\\video_images\\"
 count = 0
 
-for images in os.listdir(folder_dir):
-    print(count)
-    img = Image.open(folder_dir + images)
+# for images in os.listdir(folder_dir):
+#     img = Image.open(folder_dir + images)
+i = 0
+for i in range(900):
+    img = Image.open("F:\\VMTDK_2022\\video_gray\\frame_" + str(i) + ".jpg")
     gray_img = ImageOps.grayscale(img)
-    #gray_img.show()
-    # Save Image
-    img_noised = Image.fromarray(np.uint8(gray_img))
-    img_noised.save("F:\\VMTDK_2022\\video_gray\\frame_" + str(count) + ".jpg")
+    # #gray_img.show()
+    # # Save Image
+    # img_noised = Image.fromarray(np.uint8(gray_img))
+    # img_noised.save("F:\\VMTDK_2022\\video_gray\\frame_" + str(count) + ".jpg")
 
     gray_img_array = np.asarray(gray_img)
-    img_noisy, sigma_square = Utils.add_noise(gray_img_array, isnr)
+    img_noisy, sigma_square = Utils.noisy(gray_img_array)#add_noise(gray_img_array, isnr)
+
+    print(count)
 
     # Save Image
     img_noised = Image.fromarray(np.uint8(img_noisy))
@@ -47,7 +51,7 @@ for images in os.listdir(folder_dir):
     # DENOISING PART
     #print("START DENOSIING")
     img_res = img_noisy             # Declare denoising result as startoff nopisy image
-    while ( (Utils.snr(u_new, u_current) < 92) or (total_iterations<5) ):#( (norm(u_current - u_new) > main_stopping_crit) or (total_iterations<5) ):
+    while ( (Utils.snr(u_new, u_current) < 85) or (total_iterations<5) ):#( (norm(u_current - u_new) > main_stopping_crit) or (total_iterations<5) ):#
 
         #print("Eucledian distance between current denoised image and previous denoised image \n")
         #print(norm(u_current - u_new))

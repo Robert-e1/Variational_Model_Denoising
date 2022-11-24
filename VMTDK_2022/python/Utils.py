@@ -57,12 +57,22 @@ def add_noise(img, snr_value):
     #print(u_noisy.shape)
     #print(snr(img, u_noisy))
 
-    while ( snr(img, u_noisy) > 10 ):                  ##( abs(snr_value - snr(img, u_noisy)) > (10 ** (-4)) ):
-
-        noise = np.random.normal(size=img.shape) * sigma_square
+    while ( snr(img, u_noisy) > 500 ):                  ##( abs(snr_value - snr(img, u_noisy)) > (10 ** (-4)) ):
+        print(snr(img, u_noisy))
+        noise = np.random.normal(size=img.shape) * sigma_square / 100
         #print(noise)
         u_noisy = u_noisy + noise
 
         #print(snr(img, u_noisy))
 
     return u_noisy, sigma_square
+
+def noisy(image):
+  row,col= image.shape
+  mean = 0
+  var = 5#0.1
+  sigma = var**0.5
+  gauss = np.random.normal(mean,sigma,(row,col))
+  gauss = gauss.reshape(row,col)
+  noisy = image + gauss
+  return noisy, sigma**2
